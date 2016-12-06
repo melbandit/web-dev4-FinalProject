@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Week 7 Assignment</title>
+	<meta name="viewport" content="initial-scale=1.0">
+	<meta charset="utf-8">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+   <!--  
+
+ba1ac99363bb4b108d9941df3bb082a4 
+access-token: 228523518.e6e158d.c4812702f46845be9facfde7098d8376
+-->
+
+
+	<style type="text/css">
+	.highlight { color: blue;}
+/*	#timeline{
+		color: purple;
+	}
+	#quick-search{
+		color: gray;
+	}
+	#detailed-search{
+		color: #006eff;
+	}*/
+	#map {
+        float: left;
+        width: 100%;
+        height: 500px;
+        margin-top: 120px;
+        border: 2px solid white;
+        box-shadow: 2px 1px 1px solid black;
+
+    }
+    .search-bar{
+        margin-top: 20px;
+        text-align: center;
+        color:#FFFFFF;
+    }
+    #search-list{
+        font-size: 1.2em;
+        color: white;
+    }
+	body{
+		font-family: "Helvetica"; 
+		background-color: lightpink;
+	}
+	p{ 
+		font-weight: bold;
+		padding: 0;
+		margin: 0;
+	}
+	li{
+		list-style-type: none;
+		background: rgba(225,234,225,0.5);
+		margin: 2px;
+		padding: 5px;
+		border: 1px solid rgba(197,41,132,0.5);
+		box-shadow: 1px 1px 1px black;
+	}
+
+	</style>
+
+</head>
+<body>
+
+	
+
+	<!-- <div class="search-bar">
+	    Search Google: <form class="navbar-form navbar-left" role="search" name="googlesearch">
+	    <div class="form-group">
+	        <input id="search-input" type="search" name="googlesearch" placeholder="Search">
+	    </div>
+	    <button id="search-submit-button" type="submit" class="">Search</button>
+	    </form>
+	    Search Google: <input type="search" name="googlesearch">
+	</div> -->
+	<!-- <div id="map"></div>
+	<h2>Results:</h2>
+	<ul id="search-list"></ul> -->
+	<img src="https://secure.static.tumblr.com/f36ea457b1d1ae85ac5979b35f4aa979/zpyop6h/wHOohffuu/tumblr_static_aokawf95p48ook00g48os0ks8.jpg" style="width: 100%;">
+
+	<div>
+		<form name="tumblr">
+			tumblr handle: <input name="q" type="text" value="bonnaroo" />
+			<button type="submit">Get tumblr</button>
+			<div id="tumblr">
+				<ul>
+				</ul>
+			</div>
+		</form>
+	</div>
+
+	<hr/>
+
+	<div>
+		<form name="pinterest">
+			pinterest handle: <input name="q" type="text" value="bonnaroo" />
+			<button type="submit">Get pinterest</button>
+			<div id="pinterest">
+				<ul>
+				</ul>
+			</div>
+		</form>
+	</div>
+	
+	<div>
+		<form name="timeline">
+			Twitter handle: <input name="trend_search" type="text" />
+			<button type="submit">Get Timeline</button>
+			<div class="trends results">
+				<ul>
+				</ul>
+			</div>
+		</form>
+	</div>
+
+	<hr/>
+
+	<div>
+		<form name="search">
+			Query: <input name="q" type="text" />
+			<button type="submit">Quick Search</button>
+			<div class="results">
+				<ul>
+				</ul>
+			</div>
+		</form>
+	</div>
+	<div class="giphy">
+		<ul id="giphy">
+		</ul>
+	</div>
+	<hr/>
+
+	<div>
+		<form name="search">
+			Query: <input name="q" type="text" />
+			Limit: <input name="count" type="number" />
+			Result Type:
+			<select name="result_type">
+				<option value="mixed">Default</option>
+				<option value="popular">Most popular</option>
+				<option value="recent">Most recent</option>
+			</select>
+			<button type="submit">Custom Search</button>
+			<div class="results">
+				<ul>
+				</ul>
+			</div>
+		</form>
+	</div>
+
+	<hr/>
+
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcLGWpqaelBOUSGmNWPShmfjFaIxkISSs&callback=GoogleMapApi.initMap&libraries=places" async defer></script> -->
+<!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js" async defer></script>
+ --><script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<!-- <script type="text/javascript" src="js/require.js"></script>
+ -->
+<!--  <script type="text/javascript" src="js/tumblr.js"></script> -->
+<script type="text/javascript" src="js/week9.js"></script>
+</body>
+</html>
