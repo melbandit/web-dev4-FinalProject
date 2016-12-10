@@ -5,7 +5,7 @@ var GiphyApi = (function(options) {
     function giphyImages(name){
         var $results = $('#giphy');
         var $trends_results = $('.trends');
-        //$results.empty();
+        $results.empty();
         $trends_results.empty();
         if (!name) {
             return;
@@ -146,7 +146,7 @@ var TwitterApi = (function(options) {
     }
 
 
-    function setupSearch(event) {
+    function setupSearch() {
         
         //var $searchButton = document.getElementById('tweetButton');
         //$searchButton.addEventListener("click", TwitterApi.setupSearch);
@@ -157,10 +157,10 @@ var TwitterApi = (function(options) {
         //$placesList.innerHTML()
         // $searchButton.click(function(event) {
 
-        event.preventDefault();
+        // event.preventDefault();
 
 
-        // $('form[name=tweetSearch] button').click(function(event) {
+        $('form[name=tweetSearch] button').click(function(event) {
             console.log("working");
             var $e = $(event.currentTarget),
                 $form = $e.closest('form'),
@@ -190,7 +190,7 @@ var TwitterApi = (function(options) {
             //displayTweetsOnMap($results, response.statuses, keyword);
         });
             return false;
-        // });
+        });
     }
 
     function displayTweets($results, data, keyword) {
