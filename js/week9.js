@@ -45,7 +45,7 @@ var GiphyApi = (function(options) {
                 var smallUrl = status.images.fixed_height.url;
                 var largerUrl = status.embed_url;
                 // var postTrends = $('<p class="trends_title--lg">' + name + '</p>');
-                var postUrl = $('<li style="background-image: url('+smallUrl+'); background-size: 20%;">'+'<p class="trends_title--lg">' + name + '</p>'+'<a href="'+ status.embed_url +'" target="_blank">'+'<img class="trends_img" src="' + smallUrl + '">'+'</a>'+'<div>'+'<form name="tweetSearch">'+'<input name="q" type="text" value="' + name + '"/>'+'<button id="tweetButton" type="submit">'+ name +'</button>'+ '</form>'+'</div>'+'</li>');
+                var postUrl = $('<li style="background-image: url('+smallUrl+'); background-size: 20%;">'+'<p class="trends_title--lg">' + name + '</p>'+'<a href="'+ status.embed_url +'" target="_blank">'+'<img class="trends_img" src="' + smallUrl + '">'+'</a>'+'<div>'+'<form name="tweetSearch">'+'<input name="q" type="hidden" value="' + name + '"/>'+'<button id="tweetButton" type="hidden">'+'</button>'+ '</form>'+'</div>'+'</li>');
                 $results.append(postUrl);
                 // $trends_results.append(postTrends);
                 var $searchButton = document.querySelector('#tweetButton');
