@@ -1,3 +1,20 @@
+// $('.trends_img').hover(function(event) {
+//     /* Stuff to do when the mouse enters the element */
+//     console.log("hover");
+// }, function(event) {
+//     /* Stuff to do when the mouse leaves the element */
+//     console.log("hover out");
+// });
+
+// (function(event) {
+//     console.log('button pressed');
+//     event.preventDefault();
+//     var $change = $('body');
+//     var postText = $('<h1>Your Location has been Submitted. Now get the trends.</h1>');
+//     $change.append(postText);
+// });
+
+
 var GiphyApi = (function(options) {
     var shared = {},
     options = options || {};
@@ -22,20 +39,20 @@ var GiphyApi = (function(options) {
             //keyword: screen_name
         }).done(function(response) {
             //console.log(name, response);
-            
             //$trends_results.append(postTrends);
             for (var i = 0; i < response.data.length; i++) {
                 var status = response.data[i];
                 var smallUrl = status.images.fixed_height.url;
                 var largerUrl = status.embed_url;
-                var postTrends = $('<p class="trends_title--lg">' + name + '</p>');
-                var postUrl = $('<li><a href="'+ status.embed_url +'" target="_blank">'+'<img class="trends_img" src="' + smallUrl + '">'+'</a>'+'<div>'+'<form name="tweetSearch">'+'<input name="q" type="text" value="' + name + '"/>'+'<button id="tweetButton" type="submit">'+ name +'</button>'+ '</form>'+'</div>'+'</li>');
+                // var postTrends = $('<p class="trends_title--lg">' + name + '</p>');
+                var postUrl = $('<li style="background-image: url('+smallUrl+'); background-size: 20%;">'+'<p class="trends_title--lg">' + name + '</p>'+'<a href="'+ status.embed_url +'" target="_blank">'+'<img class="trends_img" src="' + smallUrl + '">'+'</a>'+'<div>'+'<form name="tweetSearch">'+'<input name="q" type="text" value="' + name + '"/>'+'<button id="tweetButton" type="submit">'+ name +'</button>'+ '</form>'+'</div>'+'</li>');
                 $results.append(postUrl);
-                $trends_results.append(postTrends);
+                // $trends_results.append(postTrends);
                 var $searchButton = document.querySelector('#tweetButton');
                 $searchButton.addEventListener("click", TwitterApi.setupSearch);
             }
         });
+        
     }
 
     var init = function() {
@@ -617,7 +634,16 @@ var GoogleMapApi = (function(options){
                 dataType: 'json'//,
                 // data: {param1: 'value1'},
             }).done(function(response) {
-                console.log("success", response);
+                console.log("success", response.status);
+                var $info_results = $('.info-container');
+                $info_results.empty();
+                if(response.status === "ZERO_RESULTS"){
+                    var $nothing = $('<p class="info">Nothing going on here, type a State or Country.</p>');
+                    $info_results.append($nothing);
+                } else {
+                    var $nothing = $('<p class="info">Location submitted. Now get your trends from Giphy.</p>');
+                    $info_results.append($nothing);
+                }
 
                 console.log("lat", response.results[0].geometry.location.lat);
                 console.log("lng", response.results[0].geometry.location.lng);

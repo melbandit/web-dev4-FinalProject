@@ -5,17 +5,18 @@
 	<meta name="viewport" content="initial-scale=1.0">
 	<meta charset="utf-8">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-
-
-
-   <!--  
-
-ba1ac99363bb4b108d9941df3bb082a4 
-access-token: 228523518.e6e158d.c4812702f46845be9facfde7098d8376
--->
-
-
+	<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
 	<style type="text/css">
+	* {
+	  box-sizing: border-box;
+	  -webkit-box-sizing: border-box; 
+	}
+
+	.clearfix:after {
+	  content: "";
+	  display: table;
+	  clear: both; }
 	.highlight { color: blue;}
 /*	#timeline{
 		color: purple;
@@ -26,11 +27,41 @@ access-token: 228523518.e6e158d.c4812702f46845be9facfde7098d8376
 	#detailed-search{
 		color: #006eff;
 	}*/
+	h1{
+		font-size: 1.2em;
+		width: 60%;
+	}
+	.info-container{
+		position: absolute;
+	    top: 57px;
+	    left: 0;
+	    width: 60%;
+	    height: auto;
+	    padding: 15px;
+	}
+	.info{
+		width: 100%;
+		line-height: 1.2em;
+	}
+	.trends_container{
+		margin-top: 50px;
+	}
 	.trends_img{
+		width: 80%;
+		max-width: 600px;
+	    display: block;
+	    margin-left: auto;
+	    margin-right: auto;
 	    border: 13px solid black;
-		border-radius: 25px;
-		padding: 5px;
-		margin: 10px; 
+	    border-radius: 25px;
+	    padding: 5px;
+	}
+	.trends_title--lg{
+		font-weight: 900;
+		font-size: 1.2em;
+		color: white;
+		text-align: center;
+		text-shadow: 2px 2px black;
 	}
 	#map {
         float: left;
@@ -51,12 +82,21 @@ access-token: 228523518.e6e158d.c4812702f46845be9facfde7098d8376
         color: white;
     }
     #tweets{
+/*    	font-family: 'Open Sans', sans-serif;
+*/    	font-family: 'Oswald', sans-serif;
+
         font-size: 1.2em;
         color: white;
     }
-	body{
-		font-family: "Helvetica"; 
-		background-color: lightpink;
+	html, body{
+		background-color: #a8d0e6;
+/*    	font-family: 'Open Sans', sans-serif;
+*/    	font-family: 'Oswald', sans-serif;
+
+		font-size: 1.2em;
+        color: black;
+        padding:0;
+        margin:0;
 	}
 	p{ 
 		font-weight: bold;
@@ -66,12 +106,85 @@ access-token: 228523518.e6e158d.c4812702f46845be9facfde7098d8376
 	li{
 		float: left;
 		list-style-type: none;
+		width: 100%;
 		/*background: rgba(225,234,225,0.5);*/
 		/*margin: 2px;
 		padding: 5px;*/
 		/*border: 1px solid rgba(197,41,132,0.5);
 		box-shadow: 1px 1px 1px black;*/
 	}
+	.trends_button{
+		position: fixed;
+		bottom: 0;
+		right: 0;
+		width: 40%;
+		height: 50%;
+/*		font-family: 'Open Sans';
+*/		font-weight: 100;
+/*		border-radius: 25px;
+*/		font-size: 1em;
+		background-color: #2c3970;
+		color: #b0b0b0;
+		/*color:#374785;
+		color: #ad4042;*/
+		transition-duration: 1s;
+		border: none;
+
+
+	}
+	.trends_button:hover{
+		transition-duration: 1s;
+		background-color: black;
+	}
+	.location-search{
+		position: fixed;
+		width: 60%;
+		top: 0;
+		left: 0;
+		z-index: 10;
+	}
+	.location-search input{
+		width: 100%;
+		height: 50px;
+		text-align: center;
+		background-color: black;
+/*		font-family: 'Open Sans', sans-serif;
+*/	    font-size: 1.2em;
+	    padding: 0;
+	    font-weight:100;
+	    margin: 0;
+	    border:4px solid #f76c6c;
+	    color: #a8d0e6;
+	}
+	.location_button:hover{
+		transition-duration: 1s;
+		background-color: black;
+	}
+	/*.trends_img:hover > body{
+		background-image: url("")
+	}*/
+	.giphy_container{
+		position: absolute;
+		left:0;
+		width: 60%;
+	}
+
+	.location_button{
+		position: fixed;
+		top: 0;
+		right: 0;
+		width: 40%;
+		height: 50%;
+/*		font-family: 'Open Sans';
+*/		font-weight: 200;
+/*		border-radius: 25px;
+*/		font-size: 1em;
+		background-color: #f76c6c;
+		color: white;
+		border: none;
+
+	}
+
 
 	</style>
 
@@ -94,20 +207,21 @@ access-token: 228523518.e6e158d.c4812702f46845be9facfde7098d8376
 	<ul id="search-list"></ul> -->
 
 	<div>
-		<form name="location-search">
-			Location Query: <input name="q" type="text" value="Enter US State or Country"/>
-			<button type="submit">Location Quick Search</button>
+		<form class="location-search" name="location-search">
+			<input name="q" type="text" value="Type US State or Country"/>
+			<button class="location_button" type="submit">Submit Location Search</button>
 			<!-- <div class="results">
 				<ul>
 				</ul>
 			</div> -->
 		</form>
 	</div>
+	<div class="info-container"></div>
 
 	<div class="trends_container">
 		<form name="timeline">
 			<!-- Twitter handle: <input name="trend_search" type="text" value="Enter US State or Country"/> -->
-			<button class="trends_button" type="submit">Get Trends from Location</button>
+			<button class="trends_button" type="submit">Get Trends from Giphy</button>
 			<div class="trends">
 				<ul>
 				</ul>
@@ -119,14 +233,12 @@ access-token: 228523518.e6e158d.c4812702f46845be9facfde7098d8376
 		<ul id="giphy">
 		</ul>
 	</div>
-	<hr/>
 
 	<div class="twitter_container">
 		<div id="tweets">
 			<ul></ul>
 		</div>
 	</div>
-	<hr/>
 
 	<!-- <div>
 	<form name="search">
