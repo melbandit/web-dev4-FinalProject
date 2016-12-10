@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Week 7 Assignment</title>
+	<title>Final Assignment</title>
 	<meta name="viewport" content="initial-scale=1.0">
 	<meta charset="utf-8">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
@@ -26,6 +26,12 @@ access-token: 228523518.e6e158d.c4812702f46845be9facfde7098d8376
 	#detailed-search{
 		color: #006eff;
 	}*/
+	.trends_img{
+	    border: 13px solid black;
+		border-radius: 25px;
+		padding: 5px;
+		margin: 10px; 
+	}
 	#map {
         float: left;
         width: 100%;
@@ -44,6 +50,10 @@ access-token: 228523518.e6e158d.c4812702f46845be9facfde7098d8376
         font-size: 1.2em;
         color: white;
     }
+    #tweets{
+        font-size: 1.2em;
+        color: white;
+    }
 	body{
 		font-family: "Helvetica"; 
 		background-color: lightpink;
@@ -54,12 +64,13 @@ access-token: 228523518.e6e158d.c4812702f46845be9facfde7098d8376
 		margin: 0;
 	}
 	li{
+		float: left;
 		list-style-type: none;
-		background: rgba(225,234,225,0.5);
-		margin: 2px;
-		padding: 5px;
-		border: 1px solid rgba(197,41,132,0.5);
-		box-shadow: 1px 1px 1px black;
+		/*background: rgba(225,234,225,0.5);*/
+		/*margin: 2px;
+		padding: 5px;*/
+		/*border: 1px solid rgba(197,41,132,0.5);
+		box-shadow: 1px 1px 1px black;*/
 	}
 
 	</style>
@@ -81,7 +92,55 @@ access-token: 228523518.e6e158d.c4812702f46845be9facfde7098d8376
 	<!-- <div id="map"></div>
 	<h2>Results:</h2>
 	<ul id="search-list"></ul> -->
-	<img src="https://secure.static.tumblr.com/f36ea457b1d1ae85ac5979b35f4aa979/zpyop6h/wHOohffuu/tumblr_static_aokawf95p48ook00g48os0ks8.jpg" style="width: 100%;">
+
+	<div>
+		<form name="location-search">
+			Location Query: <input name="q" type="text" value="Enter US State or Country"/>
+			<button type="submit">Location Quick Search</button>
+			<!-- <div class="results">
+				<ul>
+				</ul>
+			</div> -->
+		</form>
+	</div>
+
+	<div class="trends_container">
+		<form name="timeline">
+			<!-- Twitter handle: <input name="trend_search" type="text" value="Enter US State or Country"/> -->
+			<button class="trends_button" type="submit">Get Trends from Location</button>
+			<div class="trends">
+				<ul>
+				</ul>
+			</div>
+		</form>
+	</div>
+
+	<div class="giphy_container">
+		<ul id="giphy">
+		</ul>
+	</div>
+	<hr/>
+
+	<div class="twitter_container">
+		<div id="tweets">
+			<ul></ul>
+		</div>
+	</div>
+	<hr/>
+
+	<!-- <div>
+	<form name="search">
+			Query: <input name="q" type="text" />
+			<button type="submit">Quick Search</button>
+			<div class="results">
+				<ul>
+				</ul>
+			</div>
+		</form>
+	</div> -->
+
+
+	<!-- <img src="https://secure.static.tumblr.com/f36ea457b1d1ae85ac5979b35f4aa979/zpyop6h/wHOohffuu/tumblr_static_aokawf95p48ook00g48os0ks8.jpg" style="width: 100%;">
 
 	<div>
 		<form name="tumblr">
@@ -94,8 +153,8 @@ access-token: 228523518.e6e158d.c4812702f46845be9facfde7098d8376
 		</form>
 	</div>
 
-	<hr/>
-
+	<hr/> -->
+<!-- 
 	<div>
 		<form name="pinterest">
 			pinterest handle: <input name="q" type="text" value="bonnaroo" />
@@ -105,37 +164,28 @@ access-token: 228523518.e6e158d.c4812702f46845be9facfde7098d8376
 				</ul>
 			</div>
 		</form>
-	</div>
+	</div> -->
 	
-	<div>
-		<form name="timeline">
-			Twitter handle: <input name="trend_search" type="text" />
-			<button type="submit">Get Timeline</button>
-			<div class="trends results">
-				<ul>
-				</ul>
-			</div>
-		</form>
-	</div>
+	
 
-	<hr/>
+	<!-- <hr/> -->
 
-	<div>
+	<!-- <div>
 		<form name="search">
 			Query: <input name="q" type="text" />
 			<button type="submit">Quick Search</button>
-			<div class="results">
+			<div id="tweets">
 				<ul>
 				</ul>
 			</div>
 		</form>
-	</div>
-	<div class="giphy">
-		<ul id="giphy">
-		</ul>
-	</div>
-	<hr/>
+	</div> -->
 
+	
+
+
+	
+<!-- 
 	<div>
 		<form name="search">
 			Query: <input name="q" type="text" />
@@ -154,7 +204,7 @@ access-token: 228523518.e6e158d.c4812702f46845be9facfde7098d8376
 		</form>
 	</div>
 
-	<hr/>
+	<hr/> -->
 
 <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcLGWpqaelBOUSGmNWPShmfjFaIxkISSs&callback=GoogleMapApi.initMap&libraries=places" async defer></script> -->
 <!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js" async defer></script>

@@ -1,21 +1,23 @@
 var GiphyApi = (function(options) {
     var shared = {},
     options = options || {};
-
+    function setupListeners(){
+        // var $searchButton = document.querySelectorAll('tweetButton');
+        // $searchButton.addEventListener("click", TwitterApi.setupSearch);
+    }
+    
     function giphyImages(name){
-        //if there is a search return{
-            //loop through the images and display them
-        //}
-        //else do nothing
-        //var name = 'cat';
         var $results = $('#giphy');
+        var $trends_results = $('.trends');
+        //$results.empty();
+        $trends_results.empty();
         if (!name) {
             return;
         }
         name = name.replace("#", "");
 
         var endpoint = 'http://api.giphy.com/v1/gifs/search?q='+ name + '&limit=1&api_key=dc6zaTOxFJmzC';
-        console.log("do giphy images search for ", name)
+        //console.log("do giphy images search for ", name)
         $.ajax({
             dataType: "json",
             url: endpoint
@@ -24,18 +26,26 @@ var GiphyApi = (function(options) {
             //keyword: screen_name
         }).done(function(response) {
             //console.log(name, response);
+            
+            //$trends_results.append(postTrends);
             for (var i = 0; i < response.data.length; i++) {
                 var status = response.data[i];
-                var url = status.images.fixed_height.url;
-                var postUrl = $('<li><img src="' + url + '"><p>' + name + '</p></li>');
+                var smallUrl = status.images.fixed_height.url;
+                var largerUrl = status.embed_url;
+                var postTrends = $('<p class="trends_title--lg">' + name + '</p>');
+                var postUrl = $('<li><a href="'+ status.embed_url +'" target="_blank">'+'<img class="trends_img" src="' + smallUrl + '">'+'</a>'+'<div>'+'<form name="tweetSearch">'+'<input name="q" type="text" value="' + name + '"/>'+'<button id="tweetButton" type="submit">'+ name +'</button>'+ '</form>'+'</div>'+'</li>');
                 $results.append(postUrl);
+                $trends_results.append(postTrends);
+                var $searchButton = document.getElementById('tweetButton');
+                $searchButton.addEventListener("click", TwitterApi.setupSearch);
             }
+
         });
     }
 
     var init = function() {
         console.log('init()');
-        //setupListeners();
+        setupListeners();
     };
 
     shared.init = init;
@@ -43,6 +53,7 @@ var GiphyApi = (function(options) {
     return {
         init: init,
         giphyImages: giphyImages
+        //$searchButton: $searchButton
     }
 }());
 GiphyApi.init();
@@ -54,15 +65,19 @@ var TwitterApi = (function(options) {
     var shared = {},
         options = options || {};
 
+
     function setupListeners() {
         //console.log('setupListeners()');
 
         setupTimeline();
         setupSearch();
         // displayTweets();
+        
+        
     }
 
     function setStartingPoint( lat, lng ){
+        console.log("working");
         startLat = lat;
         startLng = lng;
     }
@@ -92,8 +107,8 @@ var TwitterApi = (function(options) {
             //keyword: screen_name
         }).done(function(response) {
             console.log(response[0].woeid);
-            console.log(response);
-
+            //console.log(response);
+            
             // params['lat'] = response.coordinates.coordinates[1];
             // params['long'] = response.coordinates.coordinates[0];
 
@@ -118,7 +133,8 @@ var TwitterApi = (function(options) {
             data: params//,
             //keyword: screen_name
         }).done(function(response) {
-            console.log(response[0].trends);
+            //console.log(response[0].trends);
+            //$results.empty();
             var trend = response[0].trends;
 
             for (var i = 0; i < trend.length; i++) {
@@ -135,13 +151,25 @@ var TwitterApi = (function(options) {
         
     }
 
-    function setupSearch() {
 
-        $('form[name=search] button').click(function(event) {
+    function setupSearch(event) {
+        
+    
+        //var $searchField = document.getElementById('');
+        
+        //var $placesList = document.getElementById('search-list');
+        //$placesList.innerHTML()
+        //$searchButton.click(function(event) {
+
+        event.preventDefault();
+
+
+        //$('form[name=tweetSearch] button').click(function(event) {
+            console.log("working");
             var $e = $(event.currentTarget),
                 $form = $e.closest('form'),
                 params = {},
-                $results = $form.find('.results ul'),
+                $results = $form.find('#tweets ul'),
                 keyword = $form.find('input[name=q]').val();
 
             params['op'] = 'search_tweets'; // which PHP function to run
@@ -154,7 +182,6 @@ var TwitterApi = (function(options) {
             if ($result_type_f) {
                 params['result_type'] = $result_type_f.val();// argument for the Twitter search API
             }
-
         $.ajax({
             dataType: "json",
             url: 'twitter-proxy.php',
@@ -162,19 +189,19 @@ var TwitterApi = (function(options) {
             data: params,
             keyword: keyword
         }).done(function(response) {
+
             displayTweets($results, response.statuses, keyword);
             //displayTweetsOnMap($results, response.statuses, keyword);
-
         });
             return false;
-        });
+        // });
     }
     function displayTweets($results, data, keyword) {
-        //console.log("displayTweets", $results);
+        console.log("displayTweets", "working here");
         $results.empty();
         for (var s in data) {
             var status = data[s];
-            console.log(status)
+            //var resultsReturn = document.getElementById("#tweets");
             var li = document.createElement('li');
             var screen_name = status.user.screen_name;
             var txt = status.text;
@@ -183,45 +210,26 @@ var TwitterApi = (function(options) {
             var highlightedKeyword = RegExModule.highlightTweet(status.text, keyword);
             txtNode.innerHTML = highlightedKeyword;
             txtNode_SN.innerHTML = screen_name;
-            //txtNode.innerHTML = txt;
+            txtNode.innerHTML = txt;
             li.appendChild(txtNode_SN);
             li.appendChild(txtNode);
             $results.append(li);
-            //console.log("Geo", status.coordinates);
-
-            // if ( status.coordinates ) {
-            //     console.log(status.coordinates);
-            //     GoogleMapApi.createMarker({
-            //         lat: status.coordinates.coordinates[1], // use real data instead
-            //         lng: status.coordinates.coordinates[0], // use real data instead
-            //         name: screen_name, // use real data instead
-            //         content: highlightedKeyword
-            //     });
-            // }
-            // mapNode.innerHTML = displayTweetsOnMap;
-
-            // if( status.coordinates){
-            //     GoogleMapApi.createInfoWindow({
-
-            //     });
-            // }
+            console.log(status);
         }
 
-        // // var keyword = $form.find('input[name=q]').val();
-
-        // for(tweet = ;tweet++;) {
-        //   var highlightedTweet = RegExModule.highlightTweet(tweet, keyword)  
-        // }
-        // return highlightTweet;
     }
 
     var init = function() {
-        //console.log('init()');
+        console.log('Twitter init()');
         setupListeners();
     };
-    shared.init = init;
-
-    return shared;
+    //shared.init = init;
+    return {
+        init: init,
+        setStartingPoint: setStartingPoint,
+        setupSearch: setupSearch,
+        displayTweets: displayTweets
+    };
 }());
 
 TwitterApi.init();
@@ -316,6 +324,7 @@ var TumblrApi = (function(options){
     return {
         init: init,
         setUpTumblrLocation: setUpTumblrLocation
+        
     }
 }());
 
@@ -394,3 +403,250 @@ var RegExModule = (function() {
 //$document.ready(function() {
     RegExModule.init();
 //});
+
+var GoogleMapApi = (function(options){
+    var map;
+    var service;
+
+    var shared = {},
+        options = options || {};
+
+    var centerPoint = {
+      lat: 33.734088, 
+      lng: -84.372260, 
+      name: 'Zoo Atlanta', 
+      content: '800 Cherokee Ave SE, Atlanta, GA 30315'
+    };
+    //var centerPoint = {lat: 33.833935, lng: -84.357232};
+
+    var $searchField = document.getElementById('search-input');
+    var $searchButton = document.getElementById('search-submit-button');
+    var $placesList = document.getElementById('search-list');
+
+    function setupListeners() {
+        //console.log('setupListeners()');
+
+        getLatLng();
+        //setupSearch();
+        // displayTweets();
+    }
+
+    function initMap() {
+        
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: centerPoint,
+            zoom: 15,
+            styles: [
+              {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+              {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+              {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+              {
+                featureType: 'administrative.locality',
+                elementType: 'labels.text.fill',
+                stylers: [{color: '#d59563'}]
+              },
+              {
+                featureType: 'poi',
+                elementType: 'labels.text.fill',
+                stylers: [{color: '#d59563'}]
+              },
+              {
+                featureType: 'poi.park',
+                elementType: 'geometry',
+                stylers: [{color: '#365e44'}]
+              },
+              {
+                featureType: 'poi.park',
+                elementType: 'labels.text.fill',
+                stylers: [{color: '#6b9a76'}]
+              },
+              {
+                featureType: 'road',
+                elementType: 'geometry',
+                stylers: [{color: '#a65bc2'}]
+              },
+              {
+                featureType: 'road',
+                elementType: 'geometry.stroke',
+                stylers: [{color: '#212a37'}]
+              },
+              {
+                featureType: 'road',
+                elementType: 'labels.text.fill',
+                stylers: [{color: '#9ca5b3'}]
+              },
+              {
+                featureType: 'road.highway',
+                elementType: 'geometry',
+                stylers: [{color: '#746855'}]
+              },
+              {
+                featureType: 'road.highway',
+                elementType: 'geometry.stroke',
+                stylers: [{color: '#1f2835'}]
+              },
+              {
+                featureType: 'road.highway',
+                elementType: 'labels.text.fill',
+                stylers: [{color: '#f3d19c'}]
+              },
+              {
+                featureType: 'transit',
+                elementType: 'geometry',
+                stylers: [{color: '#2f3948'}]
+              },
+              {
+                featureType: 'transit.station',
+                elementType: 'labels.text.fill',
+                stylers: [{color: '#d59563'}]
+              },
+              {
+                featureType: 'water',
+                elementType: 'geometry',
+                stylers: [{color: '#5b78c2'}]
+              },
+              {
+                featureType: 'water',
+                elementType: 'labels.text.fill',
+                stylers: [{color: '#515c6d'}]
+              },
+              {
+                featureType: 'water',
+                elementType: 'labels.text.stroke',
+                stylers: [{color: '#17263c'}]
+              }
+            ]
+        });
+        // createMarker(centerPoint);
+        //$searchButton.addEventListener("click", doSearch);
+    }
+
+    function createMarker(aLatLng){
+        //console.log("createMarker:", aLatLng);
+        // var geo = aLatLng.coordinates;
+
+        // if(geo && geo.type === 'Point'){
+        //     var marker = new google.maps.Marker({
+        //         position: new google.maps.LatLng(geo[1], geo[0]),
+        //         map: map,
+        //         title: '@' + aLatLng.user.screen_name + ': ' + aLatLng.text
+        //     })
+        // }
+        //marker.empty();
+        var marker = new google.maps.Marker({
+            position: aLatLng,
+            map: map,
+            title: aLatLng.name,
+            content: aLatLng.content
+        });
+        createInfoWindow(marker);
+    }
+
+    function createInfoWindow(marker){
+        //console.log("createInfoWindow", marker);
+        //var contentString = '<h4>'+ "hey"+'</h4>';
+        var place = marker.title;
+        var image = marker.url;
+        var address = marker.content;
+
+        //var imageString = '<img src="' + image +'>';
+
+        var contentString = '<h4>'+ place +'</h4>' + address; 
+        //var contentString = '<h4>'+ marker.user.screen_name +'</h4>' + marker.text;
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        marker.addListener('click', function(){
+            infowindow.open(map, marker);
+        });
+    }
+
+    function processPlacesResults(results, status){
+        //console.log('results',results);
+        //console.log('status', status);
+        //console.log('name', result.name);
+        $placesList.innerHTML = ' ';
+
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+            for (var i = 0; i < results.length; i++) {
+                var result = results[i];
+                // window.result = result; //to make it a global variabl, console
+                //console.log('result', result);
+                //console.log(result.geometry.location);
+
+                var newMarker = {
+                    lat: result.geometry.location.lat(),
+                    lng: result.geometry.location.lng(),
+                    name: result.name,
+                    content: result.formatted_address
+                };
+                createMarker(newMarker);
+                $placesList.innerHTML += '<li>' + result.name + '</li>';
+                //place.geometry.location.lat()
+                //place.geometry.location.lng()
+            }
+        }
+    }
+
+    function getLatLng(){
+        
+        $('form[name=location-search] button').click(function(event) {
+            var $e = $(event.currentTarget),
+                $form = $e.closest('form'),
+                // screen_name = $form.find('input[type=text]').val(),
+                $results = $form.find('.results ul'),
+                address = $form.find('input[name=q]').val();
+
+                params = {};
+                console.log("clicked");
+
+            var key = 'AIzaSyAcLGWpqaelBOUSGmNWPShmfjFaIxkISSs';
+            $.ajax({
+                url: 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&key=' + key,
+                type: 'GET',
+                dataType: 'json'//,
+                // data: {param1: 'value1'},
+            }).done(function(response) {
+                console.log("success", response);
+
+                console.log("lat", response.results[0].geometry.location.lat);
+                console.log("lng", response.results[0].geometry.location.lng);
+                $results.empty();
+                TwitterApi.setStartingPoint(response.results[0].geometry.location.lat, response.results[0].geometry.location.lng );
+            });
+            return false;
+        });
+        
+    }
+
+
+    function doSearch(event){
+
+        event.preventDefault();
+
+        var request = {
+            location: centerPoint,
+            radius: '100',
+            // name: aLatLng,
+            query: $searchField.value
+        };
+        var service = new google.maps.places.PlacesService(map);
+        // service.nearbySearch(request, callback);
+        service.textSearch(request, processPlacesResults);
+    }
+
+    var init = function() {
+        //console.log('init()');
+        setupListeners();
+    };
+    //shared.init = init;
+
+    return{
+        init: init,
+        initMap: initMap,
+        createMarker: createMarker,
+        getLatLng: getLatLng
+    };
+
+}());
+    GoogleMapApi.init();
