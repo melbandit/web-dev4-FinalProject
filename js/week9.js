@@ -1,11 +1,7 @@
 var GiphyApi = (function(options) {
     var shared = {},
     options = options || {};
-    function setupListeners(){
-        // var $searchButton = document.querySelectorAll('tweetButton');
-        // $searchButton.addEventListener("click", TwitterApi.setupSearch);
-    }
-    
+
     function giphyImages(name){
         var $results = $('#giphy');
         var $trends_results = $('.trends');
@@ -39,13 +35,12 @@ var GiphyApi = (function(options) {
                 var $searchButton = document.getElementById('tweetButton');
                 $searchButton.addEventListener("click", TwitterApi.setupSearch);
             }
-
         });
     }
 
     var init = function() {
         console.log('init()');
-        setupListeners();
+        //setupListeners();
     };
 
     shared.init = init;
@@ -53,7 +48,6 @@ var GiphyApi = (function(options) {
     return {
         init: init,
         giphyImages: giphyImages
-        //$searchButton: $searchButton
     }
 }());
 GiphyApi.init();
@@ -73,7 +67,7 @@ var TwitterApi = (function(options) {
         setupSearch();
         // displayTweets();
         
-        
+
     }
 
     function setStartingPoint( lat, lng ){
@@ -152,7 +146,7 @@ var TwitterApi = (function(options) {
     }
 
 
-    function setupSearch(event) {
+    function setupSearch() {
         
     
         //var $searchField = document.getElementById('');
@@ -194,7 +188,7 @@ var TwitterApi = (function(options) {
             //displayTweetsOnMap($results, response.statuses, keyword);
         });
             return false;
-        // });
+        //});
     }
     function displayTweets($results, data, keyword) {
         console.log("displayTweets", "working here");
@@ -207,8 +201,8 @@ var TwitterApi = (function(options) {
             var txt = status.text;
             var txtNode_SN = document.createElement('p');
             var txtNode = document.createElement('span');
-            var highlightedKeyword = RegExModule.highlightTweet(status.text, keyword);
-            txtNode.innerHTML = highlightedKeyword;
+            //var highlightedKeyword = RegExModule.highlightTweet(status.text, keyword);
+            //txtNode.innerHTML = highlightedKeyword;
             txtNode_SN.innerHTML = screen_name;
             txtNode.innerHTML = txt;
             li.appendChild(txtNode_SN);
@@ -323,8 +317,8 @@ var TumblrApi = (function(options){
 
     return {
         init: init,
-        setUpTumblrLocation: setUpTumblrLocation
-        
+        setUpTumblrLocation: setUpTumblrLocation,
+        setupSearch: setupSearch
     }
 }());
 
