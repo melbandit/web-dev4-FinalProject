@@ -32,14 +32,14 @@ var GiphyApi = (function(options) {
                 var postUrl = $('<li><a href="'+ status.embed_url +'" target="_blank">'+'<img class="trends_img" src="' + smallUrl + '">'+'</a>'+'<div>'+'<form name="tweetSearch">'+'<input name="q" type="text" value="' + name + '"/>'+'<button id="tweetButton" type="submit">'+ name +'</button>'+ '</form>'+'</div>'+'</li>');
                 $results.append(postUrl);
                 $trends_results.append(postTrends);
-                var $searchButton = document.getElementById('tweetButton');
+                var $searchButton = document.querySelector('#tweetButton');
                 $searchButton.addEventListener("click", TwitterApi.setupSearch);
             }
         });
     }
 
     var init = function() {
-        console.log('init()');
+        console.log('Giphy init()');
         //setupListeners();
     };
 
@@ -146,19 +146,21 @@ var TwitterApi = (function(options) {
     }
 
 
-    function setupSearch() {
+    function setupSearch(event) {
         
-    
+        //var $searchButton = document.getElementById('tweetButton');
+        //$searchButton.addEventListener("click", TwitterApi.setupSearch);
+
         //var $searchField = document.getElementById('');
         
         //var $placesList = document.getElementById('search-list');
         //$placesList.innerHTML()
-        //$searchButton.click(function(event) {
+        // $searchButton.click(function(event) {
 
         event.preventDefault();
 
 
-        //$('form[name=tweetSearch] button').click(function(event) {
+        // $('form[name=tweetSearch] button').click(function(event) {
             console.log("working");
             var $e = $(event.currentTarget),
                 $form = $e.closest('form'),
@@ -183,32 +185,40 @@ var TwitterApi = (function(options) {
             data: params,
             keyword: keyword
         }).done(function(response) {
-
+            console.log("Response", response.statuses);
             displayTweets($results, response.statuses, keyword);
             //displayTweetsOnMap($results, response.statuses, keyword);
         });
             return false;
-        //});
+        // });
     }
+
     function displayTweets($results, data, keyword) {
+        console.log("keyword",keyword);
+        //console.log("text", data[0].text);
         console.log("displayTweets", "working here");
+
         $results.empty();
+        if(!data){
+            return;
+        }
         for (var s in data) {
             var status = data[s];
+            console.log(status.text);
             //var resultsReturn = document.getElementById("#tweets");
             var li = document.createElement('li');
             var screen_name = status.user.screen_name;
             var txt = status.text;
             var txtNode_SN = document.createElement('p');
             var txtNode = document.createElement('span');
-            //var highlightedKeyword = RegExModule.highlightTweet(status.text, keyword);
-            //txtNode.innerHTML = highlightedKeyword;
+            var highlightedKeyword = RegExModule.highlightTweet(status.text, keyword);
+            txtNode.innerHTML = highlightedKeyword;
             txtNode_SN.innerHTML = screen_name;
             txtNode.innerHTML = txt;
             li.appendChild(txtNode_SN);
             li.appendChild(txtNode);
             $results.append(li);
-            console.log(status);
+            //console.log(status.text);
         }
 
     }
@@ -310,15 +320,14 @@ var TumblrApi = (function(options){
     // }
 
     var init = function() {
-        console.log('init()');
+        console.log('Tumblr init()');
         setupListeners();
     };
     shared.init = init;
 
     return {
         init: init,
-        setUpTumblrLocation: setUpTumblrLocation,
-        setupSearch: setupSearch
+        setUpTumblrLocation: setUpTumblrLocation    
     }
 }());
 
@@ -326,7 +335,11 @@ TumblrApi.init({
     // client_id: 'e6e158d6b61547739924dffdf92113b9';
 });
 
-var RegExModule = (function() {
+var RegExModule = (function(options) {
+    var shared = {},
+        options = options || {};
+
+
     function matchURL(string) {
         //console.log("matchURL:", string.text);
         var urlRE = /(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm;
@@ -382,9 +395,12 @@ var RegExModule = (function() {
         //"bob@bob.com".match(emailRE);
         return matched;
     }
-    function init(){
 
+    function init(){
+        console.log('RegExp init');
     }
+    shared.init = init;
+
     return {
         init: init,
         matchEmail: matchEmail,
@@ -394,9 +410,9 @@ var RegExModule = (function() {
     }
 
 })();
-//$document.ready(function() {
+// $document.ready(function() {
     RegExModule.init();
-//});
+// });
 
 var GoogleMapApi = (function(options){
     var map;
@@ -630,7 +646,7 @@ var GoogleMapApi = (function(options){
     }
 
     var init = function() {
-        //console.log('init()');
+        console.log('Google Maps init()');
         setupListeners();
     };
     //shared.init = init;
