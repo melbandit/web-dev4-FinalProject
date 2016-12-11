@@ -263,7 +263,7 @@ var TwitterApi = (function(options) {
             var highlightedKeyword = RegExModule.highlightTweet(status.text, keyword);
             txtNode.innerHTML = highlightedKeyword;
             txtNode_SN.innerHTML = screen_name;
-            txtNode.innerHTML = txt;
+            //txtNode.innerHTML = txt;
             li.appendChild(txtNode_SN);
             li.appendChild(txtNode);
             $results.append(li);
