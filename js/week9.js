@@ -46,8 +46,10 @@ var GiphyApi = (function(options) {
                 var postUrl = $('<li style="background-image: url('+smallUrl+'); background-size: 20%;">'+'<p class="trends_title--lg">' + name + '</p>'+'<a href="'+ status.embed_url +'" target="_blank">'+'<img class="trends_img" src="' + smallUrl + '">'+'</a>'+'<div>'+'<form name="tweetSearch">'+'<input name="q" type="text" value="' + name + '"/>'+'<button id="tweetButton" type="submit">'+ name+'</button>'+ '</form>'+'</div>'+'</li>');
                 $results.append(postUrl);
                 // $trends_results.append(postTrends);
-                var $searchButton = document.querySelector('#tweetButton');
-                $searchButton.addEventListener("click", TwitterApi.setupSearch);
+                
+                var $searchButton = document.getElementById('tweetButton');
+                // $searchButton.addEventListener("click", TwitterApi.setupSearch);
+                $searchButton.addEventListener("click", function(e) { e.preventDefault() });
             }
         });
         
@@ -163,7 +165,7 @@ var TwitterApi = (function(options) {
 
     function setupSearch() {
         
-        //var $searchButton = document.getElementById('tweetButton');
+        // var $searchButton = document.getElementById('tweetButton');
         //$searchButton.addEventListener("click", TwitterApi.setupSearch);
 
         //var $searchField = document.getElementById('');
@@ -172,11 +174,12 @@ var TwitterApi = (function(options) {
         //$placesList.innerHTML()
         // $searchButton.click(function(event) {
 
-        // event.preventDefault();
 
 
         $('form[name=tweetSearch] button').click(function(event) {
             console.log("working");
+            event.preventDefault();
+
             var $e = $(event.currentTarget),
                 $form = $e.closest('form'),
                 params = {},
