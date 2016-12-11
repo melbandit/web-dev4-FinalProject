@@ -18,15 +18,6 @@
 	  display: table;
 	  clear: both; }
 	.highlight { color: blue;}
-/*	#timeline{
-		color: purple;
-	}
-	#quick-search{
-		color: gray;
-	}
-	#detailed-search{
-		color: #006eff;
-	}*/
 	h1{
 		font-size: 1.2em;
 		width: 60%;
@@ -81,11 +72,11 @@
         font-size: 1.2em;
         color: white;
     }
-    #tweets{
+    .tweets{
 /*    	font-family: 'Open Sans', sans-serif;
 */    	font-family: 'Oswald', sans-serif;
 
-        font-size: 1.2em;
+        font-size: 0.8em;
         color: white;
     }
 	html, body{
@@ -182,29 +173,28 @@
 		background-color: #f76c6c;
 		color: white;
 		border: none;
-
 	}
-
+	.tweets{
+		position: fixed;
+		bottom: 0;
+		left:0;
+		width: 60%;
+		height: auto;
+		background-color: red;
+		color: white;
+		z-index: 15;
+	}
+	span{
+		line-height: 1.2em;
+		font-size: 0.8em;
+		font-weight: 100;
+	}
 
 	</style>
 
 </head>
 <body>
 
-	
-
-	<!-- <div class="search-bar">
-	    Search Google: <form class="navbar-form navbar-left" role="search" name="googlesearch">
-	    <div class="form-group">
-	        <input id="search-input" type="search" name="googlesearch" placeholder="Search">
-	    </div>
-	    <button id="search-submit-button" type="submit" class="">Search</button>
-	    </form>
-	    Search Google: <input type="search" name="googlesearch">
-	</div> -->
-	<!-- <div id="map"></div>
-	<h2>Results:</h2>
-	<ul id="search-list"></ul> -->
 
 	<div>
 		<form class="location-search" name="location-search">
@@ -235,88 +225,11 @@
 	</div>
 
 	<div class="twitter_container">
-		<div id="tweets">
+		<div class="tweets">
 			<ul></ul>
 		</div>
 	</div>
 
-	<!-- <div>
-	<form name="search">
-			Query: <input name="q" type="text" />
-			<button type="submit">Quick Search</button>
-			<div class="results">
-				<ul>
-				</ul>
-			</div>
-		</form>
-	</div> -->
-
-
-	<!-- <img src="https://secure.static.tumblr.com/f36ea457b1d1ae85ac5979b35f4aa979/zpyop6h/wHOohffuu/tumblr_static_aokawf95p48ook00g48os0ks8.jpg" style="width: 100%;">
-
-	<div>
-		<form name="tumblr">
-			tumblr handle: <input name="q" type="text" value="bonnaroo" />
-			<button type="submit">Get tumblr</button>
-			<div id="tumblr">
-				<ul>
-				</ul>
-			</div>
-		</form>
-	</div>
-
-	<hr/> -->
-<!-- 
-	<div>
-		<form name="pinterest">
-			pinterest handle: <input name="q" type="text" value="bonnaroo" />
-			<button type="submit">Get pinterest</button>
-			<div id="pinterest">
-				<ul>
-				</ul>
-			</div>
-		</form>
-	</div> -->
-	
-	
-
-	<!-- <hr/> -->
-
-	<!-- <div>
-		<form name="search">
-			Query: <input name="q" type="text" />
-			<button type="submit">Quick Search</button>
-			<div id="tweets">
-				<ul>
-				</ul>
-			</div>
-		</form>
-	</div> -->
-
-	
-
-
-	
-<!-- 
-	<div>
-		<form name="search">
-			Query: <input name="q" type="text" />
-			Limit: <input name="count" type="number" />
-			Result Type:
-			<select name="result_type">
-				<option value="mixed">Default</option>
-				<option value="popular">Most popular</option>
-				<option value="recent">Most recent</option>
-			</select>
-			<button type="submit">Custom Search</button>
-			<div class="results">
-				<ul>
-				</ul>
-			</div>
-		</form>
-	</div>
-
-	<hr/> -->
 
 <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcLGWpqaelBOUSGmNWPShmfjFaIxkISSs&callback=GoogleMapApi.initMap&libraries=places" async defer></script> -->
 <!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js" async defer></script>

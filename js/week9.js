@@ -43,14 +43,22 @@ var GiphyApi = (function(options) {
                 var smallUrl = status.images.fixed_height.url;
                 var largerUrl = status.embed_url;
                 // var postTrends = $('<p class="trends_title--lg">' + name + '</p>');
-                var postUrl = $('<li style="background-image: url('+smallUrl+'); background-size: 20%;">'+'<p class="trends_title--lg">' + name + '</p>'+'<a href="'+ status.embed_url +'" target="_blank">'+'<img class="trends_img" src="' + smallUrl + '">'+'</a>'+'<div>'+'<form name="tweetSearch">'+'<input name="q" type="text" value="' + name + '"/>'+'<button id="tweetButton" type="submit">'+ name+'</button>'+ '</form>'+'</div>'+'</li>');
+                var postUrl = $('<li style="background-image: url('+smallUrl+'); background-size: 20%;">'+'<p class="trends_title--lg">' + name + '</p>'+'<a href="'+ status.embed_url +'" target="_blank">'+'<img class="trends_img" src="' + smallUrl + '">'+'</a>'+'<div>'+'<form name="tweetSearch">'+'<input name="q" type="hidden" value="' + name + '"/>'+'<button class="tweetButton" type="submit">'+ name+'</button>'+ '</form>'+'</div>'+'</li>');
                 $results.append(postUrl);
                 // $trends_results.append(postTrends);
-                
-                var $searchButton = document.getElementById('tweetButton');
-                // $searchButton.addEventListener("click", TwitterApi.setupSearch);
-                $searchButton.addEventListener("click", function(e) { e.preventDefault() });
+
             }
+            //var $searchButton = document.querySelector('.tweetButton');
+                        // $searchButtons.addEventListener("click", function(e) { e.preventDefault() });
+
+
+            var $searchButtons = document.querySelectorAll('.tweetButton');
+
+            for (var j = 0; j < $searchButtons.length; j++) {
+                $searchButtons[j].addEventListener("click", TwitterApi.searchTweets);
+            }
+
+
         });
         
     }
@@ -81,9 +89,9 @@ var TwitterApi = (function(options) {
         //console.log('setupListeners()');
 
         setupTimeline();
-        setupSearch();
+        //setupSearch();
         // displayTweets();
-        
+        // searchTweets();
 
     }
 
@@ -164,17 +172,6 @@ var TwitterApi = (function(options) {
 
 
     function setupSearch() {
-        
-        // var $searchButton = document.getElementById('tweetButton');
-        //$searchButton.addEventListener("click", TwitterApi.setupSearch);
-
-        //var $searchField = document.getElementById('');
-        
-        //var $placesList = document.getElementById('search-list');
-        //$placesList.innerHTML()
-        // $searchButton.click(function(event) {
-
-
 
         $('form[name=tweetSearch] button').click(function(event) {
             console.log("working");
@@ -211,11 +208,45 @@ var TwitterApi = (function(options) {
         });
     }
 
-    function displayTweets($results, data, keyword) {
-        console.log("keyword",keyword);
-        //console.log("text", data[0].text);
-        console.log("displayTweets", "working here");
+    function searchTweets(event){
+        event.preventDefault();
 
+        var $e = $(event.currentTarget),
+            $form = $e.closest('form'),
+            params = {},
+            $results = $('.tweets ul'),
+            keyword = $form.find('input[name=q]').val();
+
+        params['op'] = 'search_tweets'; // which PHP function to run
+        params['q'] = keyword; // argument for the Twitter search API
+        var $count_f = $form.find('input[name=count]');
+        if ($count_f) {
+            params['count'] = $count_f.val();// argument for the Twitter search API
+        }
+        var $result_type_f = $form.find('select[name=result_type]');
+        if ($result_type_f) {
+            params['result_type'] = $result_type_f.val();// argument for the Twitter search API
+        }
+    $.ajax({
+        dataType: "json",
+        url: 'twitter-proxy.php',
+        resultElements: $results,
+        data: params,
+        keyword: keyword
+    }).done(function(response) {
+        //console.log("Response", response.statuses);
+        displayTweets($results, response.statuses, keyword);
+        //displayTweetsOnMap($results, response.statuses, keyword);
+    });
+        return false;
+
+    }
+
+    function displayTweets($results, data, keyword) {
+        //console.log("keyword",keyword);
+        //console.log("text", data[0].text);
+        //console.log("displayTweets", "working here");
+        // var $resultsReturn = document.getElementById("#tweets");
         $results.empty();
         if(!data){
             return;
@@ -249,7 +280,7 @@ var TwitterApi = (function(options) {
     return {
         init: init,
         setStartingPoint: setStartingPoint,
-        setupSearch: setupSearch,
+        searchTweets: searchTweets,
         displayTweets: displayTweets
     };
 }());
@@ -257,101 +288,6 @@ var TwitterApi = (function(options) {
 TwitterApi.init();
 
 
-var TumblrApi = (function(options){
-    var shared = {},
-        options = options || {};
-
-    function setupListeners(){
-        setUpTumblrLocation();
-    }
-
-    function setUpTumblrLocation( name, callback ){
-
-        $('form[name=tumblr] button').click(function(event) {
-            var $e = $(event.currentTarget),
-                $form = $e.closest('form'),
-                params = {},
-                $results = $form.find('#tumblr ul'),
-                keyword = $form.find('input[name=q]').val();
-            //var bonarooLoc = 'lat=35.475123&lng=-86.051883';
-            var api_key = 'BwkzzWwmg2RhNRzcTf1JijrEEInZJ26MsutEJYysJpy5x6tiXr';
-           // Authenticate via API Key
-            var endpoint = 'https://api.tumblr.com/v2/blog/' + keyword + '.tumblr.com/posts?api_key=' + api_key;
-
-            $.ajax({
-                type: 'GET',
-                dataType: "jsonp",
-                url: endpoint//,
-                //resultElements: $results,
-                //data: params//,
-                // keyword: keyword
-            }).done(function(rsp) {
-                //if(typeof callback === 'function') callback (response);
-                console.log(rsp.response.posts);
-                $results.empty();
-                // results.response.posts[i].photos[0].alt_sizes[i].url
-                console.log(rsp);
-
-                    if ( rsp.meta.msg === 'OK' ) {
-
-                        for (var i = 0; i < rsp.response.posts.length; i++) {
-                            var status = rsp.response.posts[i];
-                            if(status.photos){
-                                var photo = status.photos[0];
-                                var imageUrl = '<img src="' + photo.alt_sizes[3].url + '"/>';
-                                //var imageDisplay = '<a href="' + status.link +'" target="_blank">'+ imageUrl + '</a>';
-                                $results.append(imageUrl);
-                            } else if(status.player){
-                                var player = status.player[0];
-                                var video = player.embed_code;
-                                $results.append(video);
-                            } else if(status.post_url){
-                                var url = status.post_url;
-                                var postUrl = '<a href="' + url + '">'+ url +'</a>';
-                                $results.append(postUrl);
-                            }
-
-                            //var whatToBring = PinterestApi.searchPinterest(rsp.blog.name);
-
-                            // for (var j = 0; j < status.photos.length; j++) {
-                            //     var response = status.photos[i];
-                            //     var imageUrl = '<img src="' + response.original_size.url + '"/>';
-                            //     $results.append(imageUrl);
-                        }
-                            //$results.append(highlightedUrl);
-                            //var highlightedUrl = RegExModule.highlightKeyword(status.link);
-                    }
-                });
-
-            //         //$results.append('')
-                //displayTweets($results, response.statuses, keyword);
-                //displayTweetsOnMap($results, response.statuses, keyword);
-                return false;
-        });
-    }
-
-    // function urlString( string ){
-    //     var newHighlightedString = string.replace(newString, '<a class="highlight" href="' + newString + '">' + newString + '</a>');
-    //     // (fill in code here)
-    //     //and then return the new string:
-    //     return newHighlightedString;
-    // }
-
-    var init = function() {
-        console.log('Tumblr init()');
-        setupListeners();
-    };
-    shared.init = init;
-
-    return {
-        init: init,
-        setUpTumblrLocation: setUpTumblrLocation    
-    }
-}());
-
-TumblrApi.init({
-    // client_id: 'e6e158d6b61547739924dffdf92113b9';
-});
 
 var RegExModule = (function(options) {
     var shared = {},
