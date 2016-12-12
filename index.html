@@ -76,7 +76,6 @@
     .tweets{
 /*    	font-family: 'Open Sans', sans-serif;
 */    	font-family: 'Oswald', sans-serif;
-
         font-size: 0.8em;
         color: white;
     }
@@ -155,6 +154,8 @@
 	    margin: 0;
 	    border:4px solid #f76c6c;
 	    color: #a8d0e6;
+	    border-top-left-radius: 25px;
+		border-bottom-left-radius: 25px;
 /*	    border-radius: 25px;
 */	}
 	.location-search input:hover{
@@ -164,6 +165,7 @@
 	    color: #f76c6c;
 	    background: none;
 	    padding: 4px;
+
 	}
 	.location_button{
 		position: fixed;
@@ -171,13 +173,17 @@
 	    right: 0;
 	    width: 40%;
 	    height: 50px;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
 	    /* font-family: 'Open Sans'; */
 	    font-weight: 200;
-	    border-radius: 25px;
-	    font-size: 1em;
+/*	    border-radius: 25px;
+*/	    font-size: 1em;
 	    background: none;
 	    color: #f76c6c;
 	    border: 3px solid #f76c6c;
+	    border-top-right-radius: 25px;
+		border-bottom-right-radius: 25px;
 	}
 	.location_button:hover{
 		transition-duration: 1s;
@@ -193,10 +199,11 @@
 		position: absolute;
 		left:0;
 		width: 60%;
-		box-shadow: 1px 2px 3px black;
 	}
 	#giphy{
 		margin-top: 50px;
+				box-shadow: 1px 2px 3px black;
+
 	}
 	.twitter_container{
 		position: absolute;
@@ -215,7 +222,7 @@
 /*		background-color: gray;
 */		color: white;
 		z-index: 5;
-		padding: 60px 10px 20px 10px;
+		padding: 60px 10px 60px 10px;
 	}
 	.close{
 
@@ -232,16 +239,41 @@
 	}
 	.tweetButton{
 		width: 100%;
-	    border-radius: 25px;
+	    border-radius: 40px;
 	    border: 3px solid #2c3970;
 	    background: none;
 	    color: white;
 	    padding: 10px;
 	    font-size: 1em;
+	    padding-bottom: 15px;
 	}
 	.tweetButton:hover{
 		transition-duration: 1s;
 		background: #2c3970;
+	}
+	#goot-logo{
+	}
+	#goot-logo img{
+		position: fixed;
+	    bottom: 10px;
+	    right: 10px;
+	    width: 20%;
+	    /* margin-right: auto; */
+	    /* margin-left: auto; */
+	    z-index: 30;
+	}
+	.logo-size{
+		height: 25px;
+		width: auto;
+	}
+	.logo-size--lg{
+		position: absolute;
+		top: 60px;
+		left: 10px;
+	}
+	.logo-size--md{
+		height: 41px;
+	    margin-bottom: -10px;
 	}
 
 	</style>
@@ -252,8 +284,8 @@
 
 	<div>
 		<form class="location-search" name="location-search">
-			<input name="q" type="text" value="US State or Country"/>
-			<button class="location_button" type="submit">Twitter Trends Giphy Images </button>
+		<input name="q" type="text" value="US State or Country"/>
+			<button class="location_button" type="submit"> <img class="logo-size" src="images/google.png"> <img class="logo-size" src="images/twitter-trends.png"> Trends</button>
 			<!-- <div class="results">
 				<ul>
 				</ul>
@@ -274,6 +306,7 @@
 	</div> -->
 
 	<div class="giphy_container">
+		<img class="logo-size--lg" src="images/giphy-logo.png">
 		<ul id="giphy">
 		</ul>
 	</div>
@@ -285,6 +318,11 @@
 		</div>
 	</div>
 
+<footer>
+	<div id="goot-logo">
+		<img src="images/goot-logo.png" alt="Google Twitter Giphy Tweets">
+	</div>
+</footer>
 
 <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcLGWpqaelBOUSGmNWPShmfjFaIxkISSs&callback=GoogleMapApi.initMap&libraries=places" async defer></script> -->
 <!-- <script src="https://code.jquery.com/jquery-2.2.4.min.js" async defer></script>
