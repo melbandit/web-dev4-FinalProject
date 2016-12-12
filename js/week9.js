@@ -32,9 +32,6 @@ var GiphyApi = (function(options) {
         $.ajax({
             dataType: "json",
             url: endpoint
-            //resultElements: $results//,
-            //data: params//,
-            //keyword: screen_name
         }).done(function(response) {
             //console.log(name, response);
             //$trends_results.append(postTrends);
@@ -43,14 +40,11 @@ var GiphyApi = (function(options) {
                 var smallUrl = status.images.fixed_height.url;
                 var largerUrl = status.embed_url;
                 // var postTrends = $('<p class="trends_title--lg">' + name + '</p>');
-                var postUrl = $('<li style="background-image: url('+smallUrl+'); background-size: 20%;">'+'<p class="trends_title--lg">' + name + '</p>'+'<a href="'+ status.embed_url +'" target="_blank">'+'<img class="trends_img" src="' + smallUrl + '">'+'</a>'+'<div>'+'<form name="tweetSearch">'+'<input name="q" type="hidden" value="' + name + '"/>'+'<button class="tweetButton" type="submit">'+ name+'</button>'+ '</form>'+'</div>'+'</li>');
+                var postUrl = $('<li class="giphy_list" style="background-image: url('+smallUrl+'); background-size: 20%;">'+'<p class="trends_title--lg">' + name + '</p>'+'<a href="'+ status.embed_url +'" target="_blank">'+'<img class="trends_img" src="' + smallUrl + '">'+'</a>'+'<div>'+'<form name="tweetSearch">'+'<input name="q" type="hidden" value="' + name + '"/>'+'<button class="tweetButton" type="submit">'+ 'Search Twitter for '+name+'</button>'+ '</form>'+'</div>'+'</li>');
                 $results.append(postUrl);
                 // $trends_results.append(postTrends);
 
             }
-            //var $searchButton = document.querySelector('.tweetButton');
-                        // $searchButtons.addEventListener("click", function(e) { e.preventDefault() });
-
 
             var $searchButtons = document.querySelectorAll('.tweetButton');
 
@@ -88,7 +82,7 @@ var TwitterApi = (function(options) {
     function setupListeners() {
         //console.log('setupListeners()');
 
-        setupTimeline();
+        // setupTrends();
         //setupSearch();
         // displayTweets();
         // searchTweets();
@@ -101,13 +95,13 @@ var TwitterApi = (function(options) {
         startLng = lng;
     }
 
-    function setupTimeline() {
-        $('form[name=timeline] button').click(function(event) {
-            var $e = $(event.currentTarget),
-                $form = $e.closest('form'),
+    function setupTrends() {
+        // $('form[name=trendsSearch] button').click(function(event) {
+            // var $e = $(event.currentTarget),
+            //     $form = $e.closest('form'),
                 // screen_name = $form.find('input[type=text]').val(),
-                $results = $form.find('.results ul'),
-                keyword = $form.find('input[name=trend_search]').val();
+                $results = $('.results ul'),
+                keyword = $('input[name=trend_search]').val();
 
                 params = {};
 
@@ -136,7 +130,7 @@ var TwitterApi = (function(options) {
             //displayTweets($results, response);  //correct
         });
             return false;
-        });
+        // });
     }
 
 
@@ -281,6 +275,7 @@ var TwitterApi = (function(options) {
         init: init,
         setStartingPoint: setStartingPoint,
         searchTweets: searchTweets,
+        setupTrends: setupTrends,
         displayTweets: displayTweets
     };
 }());
@@ -571,21 +566,25 @@ var GoogleMapApi = (function(options){
                 dataType: 'json'//,
                 // data: {param1: 'value1'},
             }).done(function(response) {
-                console.log("success", response.status);
+                console.log("success=", response.status);
                 var $info_results = $('.info-container');
                 $info_results.empty();
                 if(response.status === "ZERO_RESULTS"){
                     var $nothing = $('<p class="info">Nothing going on here, type a State or Country.</p>');
                     $info_results.append($nothing);
                 } else {
-                    var $nothing = $('<p class="info">Location submitted. Now get your trends from Giphy.</p>');
-                    $info_results.append($nothing);
-                }
+                    // var $nothing = $('<p class="info">Location submitted. Now get your trends from Giphy.</p>');
+                    // $info_results.append($nothing);
+                    console.log("lat", response.results[0].geometry.location.lat);
+                    console.log("lng", response.results[0].geometry.location.lng);
 
-                console.log("lat", response.results[0].geometry.location.lat);
-                console.log("lng", response.results[0].geometry.location.lng);
-                $results.empty();
-                TwitterApi.setStartingPoint(response.results[0].geometry.location.lat, response.results[0].geometry.location.lng );
+                    $results.empty();
+                    TwitterApi.setStartingPoint(response.results[0].geometry.location.lat, response.results[0].geometry.location.lng );
+                    TwitterApi.setupTrends();
+                }
+                //TwitterApi.trendSearch(response[0].woeid);
+                //console.log('woeid',response[0].woeid);
+
             });
             return false;
         });

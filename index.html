@@ -53,6 +53,7 @@
 		color: white;
 		text-align: center;
 		text-shadow: 2px 2px black;
+		padding: 12px;
 	}
 	#map {
         float: left;
@@ -91,6 +92,7 @@
 	}
 	p{ 
 		font-weight: bold;
+		color: ivory;
 		padding: 0;
 		margin: 0;
 	}
@@ -98,11 +100,18 @@
 		float: left;
 		list-style-type: none;
 		width: 100%;
-		/*background: rgba(225,234,225,0.5);*/
-		/*margin: 2px;
-		padding: 5px;*/
-		/*border: 1px solid rgba(197,41,132,0.5);
-		box-shadow: 1px 1px 1px black;*/
+		margin-top: 10px;
+	    padding: 13px;
+	    background: rgba(225,234,225,0.5);
+	    border-radius: 20px;
+	}
+	li.giphy_list{
+		border: 3px solid black;
+		border-radius: 0px;
+		background: none;
+		margin-top: 0;
+		padding: 0;
+
 	}
 	.trends_button{
 		position: fixed;
@@ -146,10 +155,36 @@
 	    margin: 0;
 	    border:4px solid #f76c6c;
 	    color: #a8d0e6;
+/*	    border-radius: 25px;
+*/	}
+	.location-search input:hover{
+		transition-duration: 1s;
+/*		background-color: black;
+*/		border: 3px solid #f76c6c;
+	    color: #f76c6c;
+	    background: none;
+	    padding: 4px;
+	}
+	.location_button{
+		position: fixed;
+	    top: 0;
+	    right: 0;
+	    width: 40%;
+	    height: 50px;
+	    /* font-family: 'Open Sans'; */
+	    font-weight: 200;
+	    border-radius: 25px;
+	    font-size: 1em;
+	    background: none;
+	    color: #f76c6c;
+	    border: 3px solid #f76c6c;
 	}
 	.location_button:hover{
 		transition-duration: 1s;
-		background-color: black;
+/*		background-color: black;
+*/		border: 3px solid #f76c6c;
+	    color: white;
+	    background: #f76c6c;
 	}
 	/*.trends_img:hover > body{
 		background-image: url("")
@@ -158,42 +193,55 @@
 		position: absolute;
 		left:0;
 		width: 60%;
+		box-shadow: 1px 2px 3px black;
 	}
-
-	.location_button{
-		position: fixed;
-		top: 0;
-		right: 0;
-		width: 40%;
-		height: 50%;
-/*		font-family: 'Open Sans';
-*/		font-weight: 200;
-/*		border-radius: 25px;
-*/		font-size: 1em;
-		background-color: #f76c6c;
-		color: white;
-		border: none;
+	#giphy{
+		margin-top: 50px;
 	}
-	.twitter_containter{
+	.twitter_container{
 		position: absolute;
-		bottom: 200px;
-		left: 0;
-		width: 60%;
-	}
+		top: 50px;
+		right: 0;
+/*		width: 60%;
+*/	}
 	.tweets{
 		position: fixed;
-		bottom: 0;
-		left:0;
-		width: 100%;
-		height: auto;
-		background-color: gray;
-		color: white;
-		z-index: 15;
+/*		bottom: 0;
+*/		bottom: 0;
+		right:0;
+		width: 40%;
+		height: 100%;
+		overflow: scroll;
+/*		background-color: gray;
+*/		color: white;
+		z-index: 5;
+		padding: 60px 10px 20px 10px;
 	}
+	.close{
+
+	}
+	/*p{
+		margin-top: 30px;
+		margin-bottom: 5px;
+	}*/
 	span{
 		line-height: 1.2em;
 		font-size: 0.8em;
 		font-weight: 100;
+		padding: 5px;
+	}
+	.tweetButton{
+		width: 100%;
+	    border-radius: 25px;
+	    border: 3px solid #2c3970;
+	    background: none;
+	    color: white;
+	    padding: 10px;
+	    font-size: 1em;
+	}
+	.tweetButton:hover{
+		transition-duration: 1s;
+		background: #2c3970;
 	}
 
 	</style>
@@ -204,8 +252,8 @@
 
 	<div>
 		<form class="location-search" name="location-search">
-			<input name="q" type="text" value="Type US State or Country"/>
-			<button class="location_button" type="submit">Submit Location Search</button>
+			<input name="q" type="text" value="US State or Country"/>
+			<button class="location_button" type="submit">Twitter Trends Giphy Images </button>
 			<!-- <div class="results">
 				<ul>
 				</ul>
@@ -214,16 +262,16 @@
 	</div>
 	<div class="info-container"></div>
 
-	<div class="trends_container">
-		<form name="timeline">
-			<!-- Twitter handle: <input name="trend_search" type="text" value="Enter US State or Country"/> -->
+<!-- 	<div class="trends_container">
+		<form name="trendsSearch">
+			Twitter handle: <input name="trend_search" type="text" value="Enter US State or Country"/>
 			<button class="trends_button" type="submit">Get Trends from Giphy</button>
 			<div class="trends">
 				<ul>
 				</ul>
 			</div>
 		</form>
-	</div>
+	</div> -->
 
 	<div class="giphy_container">
 		<ul id="giphy">
@@ -232,7 +280,8 @@
 
 	<div class="twitter_container">
 		<div class="tweets">
-			<ul></ul>
+<!-- 			<button class="cross">&#735;</button>
+ -->			<ul></ul>
 		</div>
 	</div>
 
